@@ -1,5 +1,5 @@
 import styles from "../styles/Home.module.css";
-import Card from "./components/card/Card";
+import Card from "../components/card/Card";
 
 const Home = () => {
   return (

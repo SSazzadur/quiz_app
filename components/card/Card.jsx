@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import styles from "../../../styles/Card.module.css";
+import { useState } from "react";
+import styles from "../../styles/Card.module.css";
 import Questions from "./Questions";
 
 import questions from "../data/questions.json";
