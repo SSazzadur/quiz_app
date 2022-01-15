@@ -1,0 +1,20 @@
+.card {
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 2px solid #eaeaea;
+  box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.card_btn {
+  background-color: hsl(178, 58%, 33%);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.card_btn:hover {
+  background-color: hsl(178, 58%, 40%);
+}
