@@ -18,3 +18,34 @@
 .card_btn:hover {
   background-color: hsl(178, 58%, 40%);
 }
+
+.option_btn {
+  background-color: hsl(178, 58%, 33%);
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: left;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.option_btn:hover {
+  background-color: hsl(178, 58%, 40%);
+}
+
+.option_clicked {
+  pointer-events: none;
+  background-color: hsl(178, 58%, 40%);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.message {
+  font-weight: bold;
+}
