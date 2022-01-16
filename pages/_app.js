@@ -1,11 +1,14 @@
 import "../styles/globals.css";
 import Layout from "../components/layout/Layout";
+import { QuizProvider } from "../contexts/QuizContext";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <QuizProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </QuizProvider>
   );
 }
 

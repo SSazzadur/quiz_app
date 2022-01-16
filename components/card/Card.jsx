@@ -3,33 +3,41 @@ import styles from "../../styles/Card.module.css";
 import Questions from "./Questions";
 
 import questions from "../data/questions.json";
+import { useQuiz } from "../../contexts/QuizContext";
 
 const Card = () => {
-  const [questionCard, setQuestionCard] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
 
-  const [clicked, setClicked] = useState(false);
   const [message, setMessage] = useState("");
+
+  const { quizStarted, setQuizStarted, timeHandler, clickedOnOption, setClickedOnOption } =
+    useQuiz();
 
   const handleNext = () => {
     if (questionIndex < questions.length - 1) {
       setQuestionIndex(questionIndex + 1);
+      timeHandler(50);
     } else {
       // show score
     }
 
     setMessage("");
-    setClicked(false);
+    setClickedOnOption(false);
+  };
+
+  const startQuizeHandler = () => {
+    setQuizStarted(true);
+    timeHandler(50);
   };
 
   return (
     <div className={styles.card}>
-      {!questionCard ? (
+      {!quizStarted ? (
         <>
           <h2>Coding Quiz Challenge</h2>
           <p>Try to answer to following code-related questions within the time-limit.</p>
           <p>Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-          <button className={styles.card_btn} onClick={() => setQuestionCard(true)}>
+          <button className={styles.card_btn} onClick={startQuizeHandler}>
             Start Quiz
           </button>
         </>
@@ -41,11 +49,11 @@ const Card = () => {
             questionIndex={questionIndex}
             setQuestionIndex={setQuestionIndex}
             setMessage={setMessage}
-            clicked={clicked}
-            setClicked={setClicked}
+            clickedOnOption={clickedOnOption}
+            setClickedOnOption={setClickedOnOption}
           />
 
-          {clicked && (
+          {clickedOnOption && (
             <>
               <hr style={{ color: "#ccc" }} />
               <div className={styles.footer}>
