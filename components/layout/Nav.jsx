@@ -2,11 +2,11 @@ import { useQuiz } from "../../contexts/QuizContext";
 import styles from "../../styles/Nav.module.css";
 
 const Nav = () => {
-  const { quizStarted, timeLeft } = useQuiz();
+  const { quizStarted, timeLeft, setShowHighScore } = useQuiz();
 
   return (
     <div className={styles.navigation}>
-      <button className={styles.highscore_btn}>
+      <button className={styles.highscore_btn} onClick={() => setShowHighScore(true)}>
         View Highscore <i className="fas fa-hand-point-left fa-lg"></i>
       </button>
       <div className={styles.time}>

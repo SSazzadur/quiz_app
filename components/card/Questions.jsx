@@ -3,11 +3,16 @@ import { useQuiz } from "../../contexts/QuizContext";
 import styles from "../../styles/Card.module.css";
 
 const Questions = ({ question, setMessage, clickedOnOption, setClickedOnOption }) => {
-  const { resetTime } = useQuiz();
+  const { addScore, resetTime } = useQuiz();
 
   const answerHandler = option => {
-    if (option === question.answer) setMessage("Correct!");
-    else setMessage("Incorrect!");
+    if (option === question.answer) {
+      addScore(1);
+      setMessage("Correct!");
+    } else {
+      addScore(-0.5);
+      setMessage("Incorrect!");
+    }
 
     setClickedOnOption(true);
     resetTime();

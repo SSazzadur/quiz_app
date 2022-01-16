@@ -6,6 +6,8 @@ export const useQuiz = () => useContext(QuizContext);
 
 export const QuizProvider = ({ children }) => {
   const [quizStarted, setQuizStarted] = useState(false);
+  const [isScoreCard, setIsScoreCard] = useState(false);
+  const [showHighScore, setShowHighScore] = useState(false);
   const [clickedOnOption, setClickedOnOption] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [startTimer, setStartTimer] = useState(null);
@@ -23,22 +25,29 @@ export const QuizProvider = ({ children }) => {
     setTotalScore(prevTotalScore => prevTotalScore + score);
   };
 
-  const addHighScore = ({ initial }) => {
+  const addHighScore = initial => {
     if (highScores.length === 0) {
       setHighScores([{ initial, score: totalScore }]);
 
       localStorage.setItem("highScores", JSON.stringify({ initial, score: totalScore }));
     } else {
-      highScores.map(hm => {
-        if (initial === hm.initial && totalScore > hm.score) {
-          setHighScores(prevHMarks => [...prevHMarks, { initial, score: totalScore }]);
-          const sortedHMarks = [...highScores].sort((a, b) => b.score - a.score);
-          localStorage.setItem("highScores", JSON.stringify(sortedHMarks));
+      highScores.map(hs => {
+        if ((initial === hs.initial && totalScore > hs.score) || initial !== hs.initial) {
+          const newHighScores = [...highScores, { initial, score: totalScore }];
+
+          localStorage.setItem("highScores", JSON.stringify(newHighScores));
+          setHighScores(newHighScores);
+          console.log(newHighScores);
         }
       });
     }
   };
+  const removeHighScore = () => {
+    setHighScores([]);
+    localStorage.removeItem("highScores");
+  };
 
+  // timer
   const timeHandler = time => {
     setTimeLeft(time);
     setStartTimer(
@@ -47,13 +56,11 @@ export const QuizProvider = ({ children }) => {
       }, 1000)
     );
   };
-
   useEffect(() => {
     if (timeLeft === 0) {
       clearInterval(startTimer);
     }
   }, [timeLeft]);
-
   const resetTime = () => {
     clearInterval(startTimer);
   };
@@ -72,6 +79,12 @@ export const QuizProvider = ({ children }) => {
         highScores,
         addScore,
         addHighScore,
+        removeHighScore,
+        isScoreCard,
+        setIsScoreCard,
+        setTotalScore,
+        showHighScore,
+        setShowHighScore,
       }}
     >
       {children}

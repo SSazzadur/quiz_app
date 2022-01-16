@@ -1,24 +1,33 @@
 import { useState } from "react";
-import styles from "../../styles/Card.module.css";
+import { useQuiz } from "../../contexts/QuizContext";
 import Questions from "./Questions";
+import Score from "./Score";
 
 import questions from "../data/questions.json";
-import { useQuiz } from "../../contexts/QuizContext";
+import styles from "../../styles/Card.module.css";
+import HighScores from "./HighScores";
 
 const Card = () => {
   const [questionIndex, setQuestionIndex] = useState(0);
-
   const [message, setMessage] = useState("");
 
-  const { quizStarted, setQuizStarted, timeHandler, clickedOnOption, setClickedOnOption } =
-    useQuiz();
+  const {
+    quizStarted,
+    setQuizStarted,
+    timeHandler,
+    clickedOnOption,
+    setClickedOnOption,
+    isScoreCard,
+    setIsScoreCard,
+    showHighScore,
+  } = useQuiz();
 
   const handleNext = () => {
     if (questionIndex < questions.length - 1) {
       setQuestionIndex(questionIndex + 1);
       timeHandler(50);
     } else {
-      // show score
+      setIsScoreCard(true);
     }
 
     setMessage("");
@@ -32,7 +41,11 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      {!quizStarted ? (
+      {showHighScore ? (
+        <HighScores />
+      ) : isScoreCard ? (
+        <Score setQuestionIndex={setQuestionIndex} />
+      ) : !quizStarted ? (
         <>
           <h2>Coding Quiz Challenge</h2>
           <p>Try to answer to following code-related questions within the time-limit.</p>
@@ -44,10 +57,7 @@ const Card = () => {
       ) : (
         <>
           <Questions
-            questions={questions}
             question={questions[questionIndex]}
-            questionIndex={questionIndex}
-            setQuestionIndex={setQuestionIndex}
             setMessage={setMessage}
             clickedOnOption={clickedOnOption}
             setClickedOnOption={setClickedOnOption}
