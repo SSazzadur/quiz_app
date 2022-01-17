@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuiz } from "../../contexts/QuizContext";
 import styles from "../../styles/Card.module.css";
 
 const Questions = ({ question, setMessage, clickedOnOption, setClickedOnOption }) => {
-  const { addScore, resetTime } = useQuiz();
+  const { addScore, resetTime, timeEnded } = useQuiz();
+
+  useEffect(() => {
+    if (timeEnded) {
+      setMessage("Time's up!");
+      addScore(-0.5);
+      setClickedOnOption(true);
+    }
+  }, [timeEnded]);
 
   const answerHandler = option => {
     if (option === question.answer) {

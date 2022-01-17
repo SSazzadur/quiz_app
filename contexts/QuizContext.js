@@ -9,16 +9,18 @@ export const QuizProvider = ({ children }) => {
   const [isScoreCard, setIsScoreCard] = useState(false);
   const [showHighScore, setShowHighScore] = useState(false);
   const [clickedOnOption, setClickedOnOption] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
+  const [timeLeft, setTimeLeft] = useState();
   const [startTimer, setStartTimer] = useState(null);
+  const [timeEnded, setTimeEnded] = useState(false);
 
   const [totalScore, setTotalScore] = useState(0);
   const [highScores, setHighScores] = useState([]);
 
   useEffect(() => {
     const jsonValue = localStorage.getItem("highScores");
-    if (jsonValue !== null) setHighScores(JSON.parse(jsonValue));
-    else localStorage.setItem("highScores", JSON.stringify(highScores));
+    if (jsonValue !== null) {
+      setHighScores(JSON.parse(jsonValue));
+    } else localStorage.setItem("highScores", JSON.stringify(highScores));
   }, []);
 
   const addScore = score => {
@@ -29,7 +31,7 @@ export const QuizProvider = ({ children }) => {
     if (highScores.length === 0) {
       setHighScores([{ initial, score: totalScore }]);
 
-      localStorage.setItem("highScores", JSON.stringify({ initial, score: totalScore }));
+      localStorage.setItem("highScores", JSON.stringify([{ initial, score: totalScore }]));
     } else {
       highScores.map(hs => {
         if ((initial === hs.initial && totalScore > hs.score) || initial !== hs.initial) {
@@ -37,7 +39,6 @@ export const QuizProvider = ({ children }) => {
 
           localStorage.setItem("highScores", JSON.stringify(newHighScores));
           setHighScores(newHighScores);
-          console.log(newHighScores);
         }
       });
     }
@@ -59,6 +60,7 @@ export const QuizProvider = ({ children }) => {
   useEffect(() => {
     if (timeLeft === 0) {
       clearInterval(startTimer);
+      setTimeEnded(true);
     }
   }, [timeLeft]);
   const resetTime = () => {
@@ -85,6 +87,7 @@ export const QuizProvider = ({ children }) => {
         setTotalScore,
         showHighScore,
         setShowHighScore,
+        timeEnded,
       }}
     >
       {children}
